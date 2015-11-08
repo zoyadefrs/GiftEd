@@ -97,12 +97,51 @@
              
              function testAPI() {
                console.log('Welcome!  Fetching your information.... ');
-               FB.api('/me', {'fields': 'name,id,birthday'}, function(response) {
-                      console.log('Successful login for: ' + response.name);
-                      console.log("Response: " + JSON.stringify(response));
-                      //document.getElementById('status').innerHTML =
-                      //'Thanks for logging in, ' + response.name + '!';
+               FB.api('/me/friends', {'fields': 'name,id,birthday'}, function(response) {
+                        console.log('Successful login for: ' + response.name);
+                        console.log("Response: " + JSON.stringify(response));
+                        var friendsDiv = document.getElementById("friends");
+                        console.log("Length: " + response.data.length);
+                        for(var i = 0; i < response.data.length; ++i)
+                        {
+                          var newDiv = document.createElement("div");
+                          var newDivText = document.createTextNode(response.data[i].name + " has a birthday in " + GetMonth(response.data[i].birthday) + " " + GetDay(response.data[i].birthday));
+                          newDiv.appendChild(newDivText);
+                          newDiv.appendChild(document.createElement("br"));
+                          var contribBox = document.createElement("input");
+                          contribBox.type = "number";
+                          contribBox.step = "any";
+                          contribBox.style.color = "black";
+                          newDiv.appendChild(contribBox);
+                          newDiv.appendChild(document.createElement("br"));
+                          var btnContrib = document.createElement("input");
+                          btnContrib.type = "submit";
+                          btnContrib.value = "Contribute To Gift";
+                          newDiv.appendChild(btnContrib);
+                          var btnBuy = document.createElement("input");
+                          btnBuy.type = "submit";
+                          btnBuy.value = "Buy Gift";
+                          newDiv.appendChild(btnBuy);
+                          friendsDiv.appendChild(newDiv);
+                        }
+                        //document.getElementById('status').innerHTML =
+                        //'Thanks for logging in, ' + response.name + '!';
                       });
+             }
+             
+             function GetMonth(dateString)
+             {
+               var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+               var vals = dateString.split("/");
+               var monthNum = (vals.length == 2)?vals[0]:vals[1];
+               console.log("Month Num: " + monthNum);
+               return months[monthNum - 1];
+             }
+             
+             function GetDay(dateString)
+             {
+               var vals = dateString.split("/");
+               return vals[1];
              }
       </script>
 
@@ -128,8 +167,10 @@
 
           <div class="inner cover">
             <h1 class="cover-heading">GitfEd.</h1>
+            <div id="friends">
+            </div>
           </div>
-
+          
           <div class="mastfoot">
             <div class="inner">
               <p>Created at <a href="http://yhack.org">YHack 2015</a>, by <a href="https://twitter.com/zoyadefrs">@zoyadefrs</a>.</p>
