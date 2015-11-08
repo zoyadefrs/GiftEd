@@ -19,7 +19,6 @@ a:hover {
   border: 1px solid #fff;
 }
 
-
 /*
  * Base structure
  */
@@ -117,7 +116,7 @@ body {
 .cover {
   padding: 0 20px;
 }
-.cover .btn-lg {
+.cover .btn-lg: {
   padding: 10px 20px;
   font-weight: bold;
 }
