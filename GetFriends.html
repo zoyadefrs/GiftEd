@@ -46,7 +46,6 @@
             if (response.status === 'connected') {
                 // Logged into your app and Facebook.
                 testAPI();
-                window.location.href='signin.html';
                 
             } else if (response.status === 'not_authorized') {
                 // The person is logged into Facebook, but not your app.
@@ -55,15 +54,15 @@
             } else {
                 // The person is not logged into Facebook, so we're not sure if
                 // they are logged into this app or not.
-                document.getElementById('status').innerHTML = 'Please log ' +
-                'into Facebook.';
-                  //document.write('Create a Facebook account');
+                document.getElementById('status').innerHTML = 'You are ' +
+                'currently logged in.';
+                
             }
-        }
+        }//https://graph.facebook.com/oauth/access_token?client_id=791794340947256&client_secret=7475408f7c667a2592f5a883aaa875d8&redirect_uri=https://localhost/&response_type=token%20&scope=read_stream[,...]&code=AQCfKt1oRGTeHWSUSb2726ysYFzRA5K60PZOlYgpJ0gFyhB6YQAKK_x3LUiyfbTusDao74RPkh9p42zPX7ysNeYddUpoJn4E7YihmbUgqjtKuaOuu9ZTJhivHIzikecexi6BXvuxVU648Z9uUulX1jrZEFeUbpkudlJE218SIw1BKnFvjOwdOfVRbEAUZBcc4P575IcBdxtIakNYow2LfQBRwxcQ4-LmgkAtIseCCIOaNIfk_KVuNpC-CFfzGrNQCGdoPrSOTkWMwMcG12Id5N4A2ITBN1BlcljyMJbACZ1RsfsKCG-V3lDEN5ztD9qSOI4#_=_
       
       window.fbAsyncInit = function() {
         FB.init({
-                appId      : '{948029618576544}',
+                appId      : '791794340947256',//'948029618576544',
                 cookie     : true,  // enable cookies to allow the server to access
                 // the session
                 xfbml      : true,  // parse social plugins on this page
@@ -83,7 +82,9 @@
                   
         FB.getLoginStatus(function(response) {
                 statusChangeCallback(response);
-                          }); };
+                          }); 
+        testAPI();
+      };
                     
       (function(d, s, id) {
              var js, fjs = d.getElementsByTagName(s)[0];
@@ -96,10 +97,11 @@
              
              function testAPI() {
                console.log('Welcome!  Fetching your information.... ');
-               FB.api('/me', function(response) {
+               FB.api('/me', {'fields': 'name,id,birthday'}, function(response) {
                       console.log('Successful login for: ' + response.name);
-                      document.getElementById('status').innerHTML =
-                      'Thanks for logging in, ' + response.name + '!';
+                      console.log("Response: " + JSON.stringify(response));
+                      //document.getElementById('status').innerHTML =
+                      //'Thanks for logging in, ' + response.name + '!';
                       });
              }
       </script>
@@ -126,14 +128,6 @@
 
           <div class="inner cover">
             <h1 class="cover-heading">GitfEd.</h1>
-            <p class="lead"></p>
-            <p class="lead">
-            <fb:login-button scope="user_friends,user_birthday,user_about_me" data-size="xlarge" onlogin="console.log('Page before reload'); window.location.reload();">
-              </fb:login-button>
-              <div id="status">
-              </div>
-            
-            </p>
           </div>
 
           <div class="mastfoot">
@@ -155,7 +149,9 @@
     <script src="bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
-    
+      
+      <div id="status">
+      </div>
 
     
   </body>
